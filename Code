@@ -1,0 +1,119 @@
+#include<bits/stdc++.h>
+using namespace std;
+struct Node{
+    int data;
+    Node *next;
+    Node(int val)
+    {
+        data = val;
+        next = NULL;
+    }
+};
+Node* insertB(Node *head,int val)
+{
+    if(head == NULL)
+    {
+        return new Node(val);
+    }else{
+        Node *temp = new Node(val);
+        temp->next = head;
+        head = temp;
+        return head;
+    }
+}
+void printLL(Node *head)
+{
+    while(head!=NULL)
+    {
+        cout<<head->data<<" ";
+        head = head->next;
+    }
+    return;
+}
+Node* reverse1(Node* head)
+{
+    if(head == NULL)
+    {
+        return head;
+    }
+    Node *cur =head;
+    Node *prev = NULL;
+    while(cur!=NULL)
+    {
+        Node *next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+    }
+    head = prev;
+    return head;
+}
+Node* reverse2(Node *cur,Node *prev)
+{
+    if(cur==NULL)
+    {
+        return prev;
+    }
+    Node *next = cur->next;
+    cur->next = prev;
+    prev = reverse2(next,cur);
+    return prev; 
+}
+Node* reversek(Node* head,int k)
+{
+    if(head == NULL)
+    {
+        return head;
+    }
+    Node* cur = head;
+    Node *prev = NULL;
+    int k1=0;
+    while(cur!=NULL && k1<k )
+    {
+        Node *next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+        k1++;
+    }
+    head->next = reversek(cur,k);
+    head  =prev;
+    return head;
+}
+void printLLS(Node *head,int sum)
+{
+    if(head == NULL)
+    {
+        return;
+    }
+    sum = sum + head->data;
+    printLLS(head->next,sum);
+    cout<<sum-head->data<<" ";
+    
+}
+int main()
+{
+    Node *head = NULL;
+    head = insertB(head,10);
+    head = insertB(head,20);
+    head = insertB(head,30);
+    head = insertB(head,40);
+    head = insertB(head,50);
+    head = insertB(head,60);
+    head = insertB(head,70);
+    head = insertB(head,80);
+    head = insertB(head,90);
+    printLL(head);
+    head = reverse1(head);
+    cout<<endl;
+    printLL(head);
+    head = reverse2(head,NULL);
+    cout<<endl;
+    printLL(head);
+    head = reversek(head,3);
+    cout<<endl;
+    printLL(head);
+    cout<<endl;
+    printLLS(head,0);
+    
+}
